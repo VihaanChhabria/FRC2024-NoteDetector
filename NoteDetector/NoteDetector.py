@@ -4,7 +4,7 @@ import cv2
 def distanceFromOrange(image):
     orange = np.array([0, 144, 255]) #bgr orange
     
-    distances = np.linalg.norm(image - orange, axis=-1) #calculates distances
+    distances = np.sqrt(np.sum((orange - image) ** 2, axis=-1)) #calculates distances
 
     return distances
 
@@ -31,7 +31,7 @@ def get_largest_contour(mask):
 
     return largest_contour, (cX, cY)
 
-image = cv2.imread(r'NoteImages\Note2.jpg') # importing image
+image = cv2.imread(r'NoteDetector\NoteImages\Note4.jpg') # importing image
 original_image = image.copy() # creating a copy so we can see later
 
 distances = distanceFromOrange(image) # getting distances
