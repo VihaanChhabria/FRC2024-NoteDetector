@@ -32,7 +32,7 @@ def get_largest_contour(mask):
     return largest_contour, (cX, cY)
 
 # Capture video from default camera (0)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 while True:
     ret, frame = cap.read()  # Read a frame from the video stream
@@ -50,8 +50,10 @@ while True:
     mask = np.zeros((original_frame.shape[0], original_frame.shape[1], 3), dtype=np.uint8)  # Create blank mask
 
     for y, x in zip(*least_indices):
-        cv2.circle(frame, (x, y), 1, (0, 255, 0), -1)  # Plot points
         cv2.circle(mask, (x, y), 1, (255, 255, 255), -1)  # Create mask
+
+    kernel = np.ones((8, 8), np.uint8)
+    mask = cv2.erode(mask, kernel, iterations = 1)
 
     largest_contour, (cX, cY) = get_largest_contour(mask)
 
@@ -60,8 +62,8 @@ while True:
     cv2.circle(frame, (cX, cY), 30, (0, 0, 255), -1)
 
     # Display frames
-    cv2.imshow("Original Frame", original_frame)
-    cv2.imshow("Processed Frame", frame)
+    cv2.imshow("Original Frame", frame)
+    cv2.imshow("Processed Frame", mask)
 
     # Break the loop if 'q' is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):

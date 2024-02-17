@@ -43,8 +43,11 @@ mask = np.zeros((original_image.shape[1], original_image.shape[0], 3), dtype=np.
 for y, x in zip(*least_indices):
     cv2.circle(image, (x, y), 1, (0, 255, 0), -1) # plotting points
     cv2.circle(mask, (x, y), 1, (255, 255, 255), -1) # creating mask
+    cv2.circle(mask, (10, 10), 200, (255, 255, 255), -1) # creating mask
 
 largest_contour, (cX, cY) = get_largest_contour(mask)
+
+print(largest_contour)
 
 # plots largest contour and largest contour's center
 cv2.drawContours(image, [largest_contour], -1, (255, 0, 0), -1)
@@ -53,5 +56,6 @@ cv2.circle(image, (cX, cY), 30, (0, 0, 255), -1)
 # displays image
 cv2.imshow("Original Image", cv2.resize(original_image, (int(original_image.shape[1]/3), int(original_image.shape[0]/3))))
 cv2.imshow("Plotted Image", cv2.resize(image, (int(image.shape[1]/3), int(image.shape[0]/3))))
+cv2.imshow("Plotted Mask", cv2.resize(mask, (int(image.shape[1]/3), int(image.shape[0]/3))))
 cv2.waitKey(0)
 cv2.destroyAllWindows()
